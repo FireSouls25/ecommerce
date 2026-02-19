@@ -138,13 +138,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         child: product.imageUrl.isNotEmpty
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildPlaceholder();
-                  },
-                ),
+                child: _buildImage(product.imageUrl),
               )
             : _buildPlaceholder(),
       ),
@@ -172,6 +166,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildImage(String imageUrl) {
+    if (imageUrl.startsWith('assets/')) {
+      return Image.asset(
+        imageUrl,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholder();
+        },
+      );
+    } else {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholder();
+        },
+      );
+    }
   }
 
   Widget _buildProductInfo(product, NumberFormat currencyFormat) {

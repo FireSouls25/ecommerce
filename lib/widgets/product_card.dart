@@ -41,13 +41,7 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 child: product.imageUrl.isNotEmpty
-                    ? Image.network(
-                        product.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return _buildPlaceholder();
-                        },
-                      )
+                    ? _buildImage(product.imageUrl)
                     : _buildPlaceholder(),
               ),
             ),
@@ -151,5 +145,25 @@ class ProductCard extends StatelessWidget {
         color: AppTheme.primaryColor.withOpacity(0.3),
       ),
     );
+  }
+
+  Widget _buildImage(String imageUrl) {
+    if (imageUrl.startsWith('assets/')) {
+      return Image.asset(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholder();
+        },
+      );
+    } else {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholder();
+        },
+      );
+    }
   }
 }
